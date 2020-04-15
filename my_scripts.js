@@ -39,6 +39,11 @@ function viewStudentStats(id, toggle){
 		status.style.visibility = "visible";
 		status.style.height = "auto";
 	}
+	else {
+		var status = document.getElementById(id);
+		status.style.visibility = "hidden";
+		status.style.height = "0";
+	}
 }
 				
 /*
@@ -124,8 +129,22 @@ function loadStatsPage() {
 */
 function loadPlayersPage()
 {
-	
+	var dropdown = document.getElementById("player_selector");
+
+	for(let i = 0;i < players.length;i++)
+	{
+		var newAnchor = document.createElement('a');
+		newAnchor.href = "#";
+		newAnchor.className = "dropdown-item";
+		newAnchor.addEventListener('click', function()
+		{
+			switchPlayers(i);
+		});
+		newAnchor.innerHTML = players[i].name;
+		dropdown.appendChild(newAnchor);
+	}
 }
+
 /*			
 			purpose:
 				This method will update the the spans on the player's information pageX
@@ -146,4 +165,23 @@ function loadPlayersPage()
 					  avg_rec_yards - the average number of receiving yards for the player's Buff career
 */
 				
+function switchPlayers(playerNum)
+{
+	document.getElementById("selectPlayerButton").innerHTML = players[playerNum].name;
+	document.getElementById("player_img").src = players[playerNum].img;
+	document.getElementById("player_img").alt = players[playerNum].alt;
+	document.getElementById("p_year").innerHTML = players[playerNum].year;
+	document.getElementById("p_major").innerHTML = players[playerNum].major;
+	document.getElementById("g_played").innerHTML = players[playerNum].games_played;
+	document.getElementById("p_yards").innerHTML = players[playerNum].pass_yards;
+	document.getElementById("r_yards").innerHTML = players[playerNum].rushing_yards;
+	document.getElementById("rec_yards").innerHTML = players[playerNum].receiving_yards;
 
+	var avgPassing = players[playerNum].pass_yards / players[playerNum].games_played;
+	var avgRushing = players[playerNum].rushing_yards / players[playerNum].games_played;
+	var avgReceive = players[playerNum].receiving_yards / players[playerNum].games_played;
+
+	document.getElementById("avg_p_yards").innerHTML = avgPassing;
+	document.getElementById("avg_r_yards").innerHTML = avgRushing;
+	document.getElementById("avg_rec_yards").innerHTML = avgReceive;
+}
